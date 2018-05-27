@@ -1,5 +1,7 @@
 import Document, { Head, Main, NextScript } from 'next/document';
 import 'antd/dist/antd.css';
+import '../static/nprogress.css';
+import '../static/styles.css';
 
 export default class MyDocument extends Document {
   static async getInitialProps(ctx) {

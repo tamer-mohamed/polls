@@ -1,16 +1,14 @@
 import React from 'react';
-import { Row, Card, Col, List } from 'antd';
+import Router from 'next/router';
+import { Card, List } from 'antd';
 import { parse } from 'url';
 import pathMatch from 'path-match';
-import Router from 'next/router';
 import PropTypes from 'prop-types';
-import axios from 'axios';
+import questionsService from '../services/questions';
 import fecha from 'fecha';
-import getConfig from 'next/config';
 import Question from '../types/question';
 import Layout from '../components/layout';
 
-const { publicRuntimeConfig: { SERVICE_URL } } = getConfig();
 const route = pathMatch();
 
 /**
@@ -18,16 +16,7 @@ const route = pathMatch();
  */
 export default class QuestionsList extends React.Component {
   static async getInitialProps() {
-    let questions = [];
-
-    try {
-      const response = await axios.get(`${SERVICE_URL}/questions`);
-      questions = response.data;
-    } catch (e) {
-      console.error('Error in fetching questions list', e.response);
-    }
-
-    return { questions };
+    return { questions: await questionsService.list() };
   }
 
   static propTypes = {
@@ -36,12 +25,12 @@ export default class QuestionsList extends React.Component {
 
   handleCardClick(url) {
     const match = route('/questions/:id');
-    const params = match(url);
+    const query = match(url);
 
     Router.push(
       {
         pathname: '/questions',
-        query: params,
+        query,
       },
       url,
     );
@@ -51,18 +40,23 @@ export default class QuestionsList extends React.Component {
     const { questions } = this.props;
 
     return (
-      <Layout title="Polls">
+      <Layout title="Questions">
+        <h1>Questions</h1>
         <List
-          grid={{ gutter: 16, xs: 1, sm: 2, md: 4, lg: 4, xl: 6, xxl: 3 }}
+          grid={{ gutter: 16, md: 4 }}
           dataSource={questions}
           renderItem={({ url, published_at: publishedAt, choices, question }) =>
             <List.Item>
-              <Card title={question} onClick={() => this.handleCardClick(url)}>
+              <Card
+                title={question}
+                onClick={() => this.handleCardClick(url)}
+                hoverable
+              >
                 <p>
                   {fecha.format(new Date(publishedAt), 'dddd MMMM Do, YYYY')}
                 </p>
                 <p>
-                  Length: {choices.length}
+                  Choices: {choices.length}
                 </p>
               </Card>
             </List.Item>}
