@@ -4,8 +4,7 @@ import React from 'react';
 import NProgress from 'nprogress';
 import Head from 'next/head';
 import { Row, Col } from 'antd';
-
-const grid = { md: 20 };
+import 'antd/dist/antd.css';
 
 Router.onRouteChangeStart = () => {
   NProgress.start();
@@ -24,7 +23,7 @@ const Layout = ({ children, title }) =>
       </title>
     </Head>
     <Row type="flex" align="center">
-      <Col {...grid}>
+      <Col md={20}>
         {children}
       </Col>
     </Row>

@@ -2,6 +2,9 @@
 
 Single page application with [Next.js](https://github.com/zeit/next.js/) that lets users vote through the Polls.
 
+## Demo
+[https://polls-vytrvowwre.now.sh](https://polls-vytrvowwre.now.sh)
+
 ## How to use
 
 
@@ -26,6 +29,6 @@ yarn dev
 ## Next steps
 - [ ] Use state management (i.e Redux) (didn't use any as the application is fairly small)
 - [ ] Improve management/query of async calls with [redux-query](https://github.com/amplitude/redux-query)
-- [ ] Ability to re-order choices when create/edit a question (API doesn't support it)
+- [ ] Ability to re-order choices when create/edit a question
 - [ ] Pagination in polls list page
 - [ ] Filters and search in polls list page
