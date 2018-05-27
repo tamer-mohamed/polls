@@ -4,30 +4,15 @@ import getConfig from 'next/config';
 const { publicRuntimeConfig: { SERVICE_URL } } = getConfig();
 
 export default {
-  async list() {
-    let questions = [];
-
-    try {
-      const response = await axios.get(`${SERVICE_URL}/questions`);
-      questions = response.data;
-    } catch (e) {
-      console.error('Error in fetching questions list', e.response);
-    }
-
-    return questions;
+  list() {
+    return axios.get(`${SERVICE_URL}/questions`).then(({ data }) => data);
   },
-  async byId(id) {
-    let question = {
-      choices: [],
-    };
-
-    try {
-      const response = await axios.get(`${SERVICE_URL}/questions/${id}`);
-      question = response.data;
-    } catch (e) {
-      console.error('Error in fetching question details', e.response);
-    }
-
-    return question;
+  byId(id) {
+    return axios.get(`${SERVICE_URL}/questions/${id}`).then(({ data }) => data);
+  },
+  vote({ questionId, choiceId }) {
+    return axios.post(
+      `${SERVICE_URL}/questions/${questionId}/choices/${choiceId}`,
+    );
   },
 };

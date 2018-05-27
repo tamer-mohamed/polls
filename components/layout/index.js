@@ -31,7 +31,7 @@ const Layout = ({ children, title }) =>
   </div>;
 
 Layout.propTypes = {
-  children: PropTypes.element.isRequired,
+  children: PropTypes.node.isRequired,
   title: PropTypes.string.isRequired,
 };
 

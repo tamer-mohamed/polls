@@ -1,16 +1,30 @@
 import React from 'react';
-import { Table, Progress, Icon, Divider, Button } from 'antd';
+import Router from 'next/router';
+import { Table, Progress, Icon, Divider, Button, notification } from 'antd';
 import Link from 'next/link';
+import pathMatch from 'path-match';
 import questionsService from '../services/questions';
 import Question from '../types/question';
 import Layout from '../components/layout';
+
+const route = pathMatch();
 
 /**
  * Display question details (choices and votes)
  */
 export default class QuestionsDetail extends React.Component {
   static async getInitialProps({ query }) {
-    return { question: await questionsService.byId(query.id) };
+    let question = {
+      choices: [],
+    };
+
+    try {
+      const question = await questionsService.byId(query.id);
+    } catch (e) {
+      console.error('Error in fetching question details', e.response);
+    }
+
+    return { question };
   }
 
   static propTypes = {
@@ -57,8 +71,32 @@ export default class QuestionsDetail extends React.Component {
     },
   ];
 
-  handleChoiceSelection = ({ choice: selectedChoice }) => {
+  handleChoiceSelection = ({ url: selectedChoice }) => {
     this.setState({ selectedChoice });
+  };
+
+  handleSubmitVote = () => {
+    const { selectedChoice } = this.state;
+    const match = route('/questions/:questionId/choices/:choiceId');
+    const params = match(selectedChoice);
+
+      
+    questionsService
+      .vote(params)
+      .then(() => {
+        Router.push('/').then(() => {
+          notification.success({
+            message: 'Your vote successfully submitted',
+          });
+        });
+      })
+      .catch(e => {
+        console.error(e);
+
+        notification.error({
+          message: 'Something went wrong...',
+        });
+      });
   };
 
   render() {
@@ -87,14 +125,19 @@ export default class QuestionsDetail extends React.Component {
             selectedRowKeys: [selectedChoice],
             onSelect: this.handleChoiceSelection,
           }}
-          rowKey="choice"
+          rowKey="url"
           columns={this.columns}
           pagination={false}
           size="small"
         />
 
         <div className="adjust-right large-spacing">
-          <Button onClick={() => {}} type="primary" size="large">
+          <Button
+            onClick={this.handleSubmitVote}
+            disabled={!selectedChoice}
+            type="primary"
+            size="large"
+          >
             Save vote
           </Button>
         </div>

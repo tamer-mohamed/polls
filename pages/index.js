@@ -1,7 +1,6 @@
 import React from 'react';
 import Router from 'next/router';
 import { Card, List } from 'antd';
-import { parse } from 'url';
 import pathMatch from 'path-match';
 import PropTypes from 'prop-types';
 import questionsService from '../services/questions';
@@ -16,7 +15,15 @@ const route = pathMatch();
  */
 export default class QuestionsList extends React.Component {
   static async getInitialProps() {
-    return { questions: await questionsService.list() };
+    let questions = [];
+
+    try {
+      const questions = await questionsService.list();
+    } catch (e) {
+      console.error('Error in fetching questions list', e.response);
+    }
+
+    return { questions };
   }
 
   static propTypes = {
