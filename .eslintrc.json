@@ -1,5 +1,8 @@
 {
   "parser": "babel-eslint",
+  "env": {
+    "browser": true
+  },
   "extends": [
     "airbnb",
     "prettier",
@@ -9,8 +12,9 @@
     // Not supporting nested package.json yet
     // https://github.com/benmosher/eslint-plugin-import/issues/458
     "import/no-extraneous-dependencies": "off",
-
-    "function-paren-newline": ["off"],
+    "import/no-named-as-default": "off",
+    "function-paren-newline": "off",
+    "jsx-a11y/anchor-is-valid": "off",
 
     // Allow js files to use jsx syntax, too
     "react/jsx-filename-extension": ["error", { "extensions": [".js"] }],
@@ -26,5 +30,21 @@
       }
     ]
   },
-  "plugins": ["prettier"]
+  "plugins": ["prettier"],
+  "overrides": [
+    {
+      "files": [
+        "**.test.js",
+        "src/__mocks__/**/*.js",
+        "src/core/testUtils/**.js"
+      ],
+      "rules": {
+        "no-use-before-define": ["off"]
+      },
+      "env": {
+        "browser": true,
+        "jest": true
+      }
+    }
+  ]
 }

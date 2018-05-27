@@ -1,6 +1,14 @@
 import React from 'react';
 import Router from 'next/router';
-import { Table, Progress, Icon, Divider, Button, notification } from 'antd';
+import {
+  Table,
+  Progress,
+  Icon,
+  Divider,
+  Button,
+  notification,
+  Tooltip,
+} from 'antd';
 import Link from 'next/link';
 import pathMatch from 'path-match';
 import questionsService from '../services/questions';
@@ -19,7 +27,7 @@ export default class QuestionsDetail extends React.Component {
     };
 
     try {
-      const question = await questionsService.byId(query.id);
+      question = await questionsService.byId(query.id);
     } catch (e) {
       console.error('Error in fetching question details', e.response);
     }
@@ -28,7 +36,7 @@ export default class QuestionsDetail extends React.Component {
   }
 
   static propTypes = {
-    question: Question,
+    question: Question.isRequired,
   };
 
   state = {
@@ -80,7 +88,6 @@ export default class QuestionsDetail extends React.Component {
     const match = route('/questions/:questionId/choices/:choiceId');
     const params = match(selectedChoice);
 
-      
     questionsService
       .vote(params)
       .then(() => {
@@ -108,7 +115,9 @@ export default class QuestionsDetail extends React.Component {
         <h1>
           <Link href="/">
             <a>
-              <Icon type="left" /> Back
+              <Tooltip title="Back">
+                <Icon type="left" />
+              </Tooltip>
             </a>
           </Link>
           <Divider type="vertical" /> Question: {question.question}
@@ -116,7 +125,7 @@ export default class QuestionsDetail extends React.Component {
         <Table
           dataSource={question.choices}
           rowClassName={({ choice }) =>
-            choice != selectedChoice ? 'pointer' : ''}
+            choice !== selectedChoice ? 'pointer' : ''}
           onRow={record => ({
             onClick: () => this.handleChoiceSelection(record),
           })}

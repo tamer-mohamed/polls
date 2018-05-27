@@ -29,5 +29,7 @@
   margin: 20px;
 }
 
-.s_large--bottom-only {
+/* utils */
+.ant-list-item  .ant-list-item-content {
+  max-width: 100%;
 }

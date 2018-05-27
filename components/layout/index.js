@@ -7,7 +7,7 @@ import { Row, Col } from 'antd';
 
 const grid = { md: 20 };
 
-Router.onRouteChangeStart = url => {
+Router.onRouteChangeStart = () => {
   NProgress.start();
 };
 Router.onRouteChangeComplete = () => NProgress.done();

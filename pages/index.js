@@ -1,10 +1,11 @@
 import React from 'react';
 import Router from 'next/router';
-import { Card, List } from 'antd';
+import Link from 'next/link';
+import { Card, List, Icon, Divider, Tooltip } from 'antd';
 import pathMatch from 'path-match';
 import PropTypes from 'prop-types';
-import questionsService from '../services/questions';
 import fecha from 'fecha';
+import questionsService from '../services/questions';
 import Question from '../types/question';
 import Layout from '../components/layout';
 
@@ -18,7 +19,7 @@ export default class QuestionsList extends React.Component {
     let questions = [];
 
     try {
-      const questions = await questionsService.list();
+      questions = await questionsService.list();
     } catch (e) {
       console.error('Error in fetching questions list', e.response);
     }
@@ -30,16 +31,35 @@ export default class QuestionsList extends React.Component {
     questions: PropTypes.arrayOf(Question).isRequired,
   };
 
-  handleCardClick(url) {
+  static handleCardClick(url) {
     const match = route('/questions/:id');
     const query = match(url);
 
     Router.push(
       {
-        pathname: '/questions',
+        pathname: '/detail',
         query,
       },
       url,
+    );
+  }
+
+  renderItem({ url, published_at: publishedAt, choices, question }) {
+    return (
+      <List.Item className="fit">
+        <Card
+          title={question}
+          onClick={() => QuestionsList.handleCardClick(url)}
+          hoverable
+        >
+          <p>
+            {fecha.format(new Date(publishedAt), 'dddd MMMM Do, YYYY')}
+          </p>
+          <p>
+            Choices: {choices.length}
+          </p>
+        </Card>
+      </List.Item>
     );
   }
 
@@ -48,25 +68,20 @@ export default class QuestionsList extends React.Component {
 
     return (
       <Layout title="Questions">
-        <h1>Questions</h1>
+        <h1>
+          <Link href="/create" as="/questions/create">
+            <a>
+              <Tooltip title="Create a new question">
+                <Icon type="plus-circle" />
+              </Tooltip>
+            </a>
+          </Link>
+          <Divider type="vertical" />Questions
+        </h1>
         <List
           grid={{ gutter: 16, md: 4 }}
           dataSource={questions}
-          renderItem={({ url, published_at: publishedAt, choices, question }) =>
-            <List.Item>
-              <Card
-                title={question}
-                onClick={() => this.handleCardClick(url)}
-                hoverable
-              >
-                <p>
-                  {fecha.format(new Date(publishedAt), 'dddd MMMM Do, YYYY')}
-                </p>
-                <p>
-                  Choices: {choices.length}
-                </p>
-              </Card>
-            </List.Item>}
+          renderItem={this.renderItem}
         />
       </Layout>
     );

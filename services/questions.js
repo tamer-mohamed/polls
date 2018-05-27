@@ -15,4 +15,8 @@ export default {
       `${SERVICE_URL}/questions/${questionId}/choices/${choiceId}`,
     );
   },
+  create(values) {
+    // we force pushing the first question in the first page
+    return axios.post(`${SERVICE_URL}/questions?page=1`, values);
+  },
 };
