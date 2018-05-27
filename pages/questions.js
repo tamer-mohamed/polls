@@ -1,31 +1,16 @@
 import React from 'react';
-import axios from 'axios';
-import { Table } from 'antd';
-import getConfig from 'next/config';
+import { Table, Progress, Icon, Divider, Button } from 'antd';
+import Link from 'next/link';
+import questionsService from '../services/questions';
 import Question from '../types/question';
 import Layout from '../components/layout';
-
-const { publicRuntimeConfig: { SERVICE_URL } } = getConfig();
 
 /**
  * Display question details (choices and votes)
  */
-export default class QuestionsList extends React.Component {
+export default class QuestionsDetail extends React.Component {
   static async getInitialProps({ query }) {
-    let question = {
-      choices: [],
-    };
-
-    console.log('query', query);
-
-    try {
-      const response = await axios.get(`${SERVICE_URL}/questions/${query.id}`);
-      question = response.data;
-    } catch (e) {
-      console.error('Error in fetching question details', e.response);
-    }
-
-    return { question };
+    return { question: await questionsService.byId(query.id) };
   }
 
   static propTypes = {
@@ -41,39 +26,78 @@ export default class QuestionsList extends React.Component {
 
   columns = [
     {
+      title: 'Choice',
       dataIndex: 'choice',
       render(text) {
         return text;
       },
     },
     {
+      title: 'Votes',
       dataIndex: 'votes',
       render(text) {
         return text;
       },
     },
     {
+      title: 'Percentage',
       dataIndex: 'percentage',
       render: (text, record) => {
         const percentage = record.votes / this.state.total * 100;
 
-        return Number.isNaN(percentage) ? 0 : percentage;
+        return (
+          <Progress
+            percent={
+              Number.isNaN(percentage) ? 0 : parseFloat(percentage.toFixed(1))
+            }
+            successPercent={-1}
+          />
+        );
       },
     },
   ];
 
+  handleChoiceSelection = ({ choice: selectedChoice }) => {
+    this.setState({ selectedChoice });
+  };
+
   render() {
     const { question } = this.props;
+    const { selectedChoice } = this.state;
 
     return (
       <Layout title={question.question}>
+        <h1>
+          <Link href="/">
+            <a>
+              <Icon type="left" /> Back
+            </a>
+          </Link>
+          <Divider type="vertical" /> Question: {question.question}
+        </h1>
         <Table
           dataSource={question.choices}
+          rowClassName={({ choice }) =>
+            choice != selectedChoice ? 'pointer' : ''}
+          onRow={record => ({
+            onClick: () => this.handleChoiceSelection(record),
+          })}
+          rowSelection={{
+            type: 'radio',
+            selectedRowKeys: [selectedChoice],
+            onSelect: this.handleChoiceSelection,
+          }}
           rowKey="choice"
           columns={this.columns}
           pagination={false}
           size="small"
         />
+
+        <div className="adjust-right large-spacing">
+          <Button onClick={() => {}} type="primary" size="large">
+            Save vote
+          </Button>
+        </div>
       </Layout>
     );
   }

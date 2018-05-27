@@ -1,9 +1,17 @@
 import PropTypes from 'prop-types';
+import Router from 'next/router';
 import React from 'react';
+import NProgress from 'nprogress';
 import Head from 'next/head';
 import { Row, Col } from 'antd';
 
 const grid = { md: 20 };
+
+Router.onRouteChangeStart = url => {
+  NProgress.start();
+};
+Router.onRouteChangeComplete = () => NProgress.done();
+Router.onRouteChangeError = () => NProgress.done();
 
 /**
  * Base component (wrapper) for the pages

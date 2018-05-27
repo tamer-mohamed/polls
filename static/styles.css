@@ -1,0 +1,33 @@
+/** APP GLOBAL STYLES */
+.pointer {
+  cursor: pointer;
+}
+
+.adjust-center {
+  text-align: center;
+}
+
+.adjust-right {
+  text-align: right;
+}
+
+.adjust-left {
+  text-align: left;
+}
+
+/* spacings */
+
+.large-spacing {
+  margin: 20px 0;
+}
+
+.large-spacing--top-only {
+  margin-bottom: 0;
+}
+
+.s_large {
+  margin: 20px;
+}
+
+.s_large--bottom-only {
+}
