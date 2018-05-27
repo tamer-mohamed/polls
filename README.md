@@ -5,11 +5,11 @@ Single page application with [Next.js](https://github.com/zeit/next.js/) that le
 ## How to use
 
 
-Download the example [or clone the repo]():
+Download the example [or clone the repo](https://github.com/tamerelsayed/polls.git):
 
 ```bash
-curl https://codeload.github.com/zeit/next.js/tar.gz/canary | tar -xz --strip=2 next.js-canary/examples/with-ant-design
-cd with-ant-design
+git clone https://github.com/tamerelsayed/polls.git
+cd polls
 ```
 
 Install it and run:
