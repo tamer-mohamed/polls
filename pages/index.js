@@ -69,7 +69,7 @@ export default class QuestionsList extends React.Component {
     return (
       <Layout title="Questions">
         <h1>
-          <Link href="/create" as="/questions/create">
+          <Link href="/create" as="/create">
             <a>
               <Tooltip title="Create a new question">
                 <Icon type="plus-circle" />

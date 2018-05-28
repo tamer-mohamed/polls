@@ -18,14 +18,12 @@ app.prepare().then(() => {
     // TODO: use next-routes
     if (params === false) {
       handle(req, res);
-    } else if (params.id === 'create') {
-      app.render(req, res, '/create', { ...params, ...query });
-    } else {
-      // assigning `query` into the params means that we still
-      // get the query string passed to our application
-      // i.e. /detail/?id=123
-      app.render(req, res, '/detail', { ...params, ...query });
+      return;
     }
+    // assigning `query` into the params means that we still
+    // get the query string passed to our application
+    // i.e. /detail/?id=123
+    app.render(req, res, '/detail', { ...params, ...query });
   }).listen(port, err => {
     if (err) throw err;
     console.log(`> Ready on http://localhost:${port}`);

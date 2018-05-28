@@ -3,7 +3,7 @@
 Single page application with [Next.js](https://github.com/zeit/next.js/) that lets users vote through the Polls.
 
 ## Demo
-[https://polls-vytrvowwre.now.sh](https://polls-vytrvowwre.now.sh)
+[https://polls-wpetkkdruh.now.sh](https://polls-wpetkkdruh.now.sh)
 
 ## How to use
 

@@ -93,7 +93,7 @@ export default class QuestionsDetail extends React.Component {
       .then(() => {
         Router.push('/').then(() => {
           notification.success({
-            message: 'Your vote successfully submitted',
+            message: 'Your vote has been submitted.',
           });
         });
       })
