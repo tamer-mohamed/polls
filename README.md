@@ -26,6 +26,14 @@ yarn dev
 ```
 
 
+Test and linting
+```bash
+npm test
+# or
+yarn test
+```
+
+
 ## Next steps
 - [ ] Use state management (i.e Redux) (didn't use any as the application is fairly small)
 - [ ] Improve management/query of async calls with [redux-query](https://github.com/amplitude/redux-query)

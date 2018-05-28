@@ -44,7 +44,7 @@ export default class QuestionsList extends React.Component {
     );
   }
 
-  renderItem({ url, published_at: publishedAt, choices, question }) {
+  static renderItem({ url, published_at: publishedAt, choices, question }) {
     return (
       <List.Item className="fit">
         <Card
@@ -81,7 +81,7 @@ export default class QuestionsList extends React.Component {
         <List
           grid={{ gutter: 16, md: 4 }}
           dataSource={questions}
-          renderItem={this.renderItem}
+          renderItem={QuestionsList.renderItem}
         />
       </Layout>
     );

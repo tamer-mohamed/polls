@@ -81,7 +81,7 @@ export class CreateQuestion extends React.Component {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         this.setState({ loading: true });
-          
+
         questionsService
           .create({
             question: values.question,
